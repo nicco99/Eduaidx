@@ -23,6 +23,12 @@ app.get("/", (req, res) => {
   app.get("/about", (req, res) => {
     res.render("about");
   })
+  app.get("/login", (req, res) => {
+    res.render("login");
+  })
+  app.get("/register", (req, res) => {
+    res.render("register");
+  })
   app.get("/team", (req, res) => {
     res.render("team");
   })

@@ -18,6 +18,23 @@
     z-index: 99;
 }
 
+.logo-img {
+    max-height: 50px; /* Adjust as needed */
+    height: auto; /* Maintain aspect ratio */
+    width: auto; /* Prevent image stretching */
+}
+
+/* Add spacing between the image and the text */
+.me-2 {
+    margin-right: 0.5rem; /* Bootstrap margin-right utility */
+}
+
+/* Ensure the text and image are aligned */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
 
 /*** Spinner ***/
 #spinner {
