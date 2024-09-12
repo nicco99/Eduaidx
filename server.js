@@ -1,6 +1,7 @@
 const express = require("express")
-
-const path = require("path") ; 
+const userRouter = require("./routes/user")
+const path = require("path") ;
+const {requireAuth} = require("./middleware/authMiddleware") 
 const bodyParser = require("body-parser") ;
 const app = express()
 const port = 5000
@@ -29,6 +30,9 @@ app.get("/", (req, res) => {
   app.get("/register", (req, res) => {
     res.render("register");
   })
+  app.get("/dashboard",requireAuth, (req, res) => {
+    res.render("dashboard");
+  })
   app.get("/team", (req, res) => {
     res.render("team");
   })
@@ -41,6 +45,7 @@ app.get("/", (req, res) => {
   app.get("/booking", (req, res) => {
     res.render("booking");
   })
+  app.use("/user",userRouter)
 
   const serverRunning = ()=>{
     console.log(`Server is running on port ${port}`)
