@@ -17,6 +17,7 @@ app.use("/lib", express.static(__dirname + "/public/lib"));
 app.use("/scss", express.static(__dirname + "/public/scss"));
 app.use("/fonts", express.static(__dirname + "/public/fonts"));
 app.use("/img", express.static(__dirname + "/public/img"));
+app.use("/partials", express.static(__dirname + "/public/partials"));
 
 app.get("/", (req, res) => {
     res.render("index");
@@ -44,6 +45,9 @@ app.get("/", (req, res) => {
   })
   app.get("/booking", (req, res) => {
     res.render("booking");
+  })
+  app.get("/contact", (req, res) => {
+    res.render("contact");
   })
   app.use("/user",userRouter)
 

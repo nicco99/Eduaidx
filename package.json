@@ -6,7 +6,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "dev": "nodemon server.js"
+    "start:dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
