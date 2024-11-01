@@ -1,13 +1,16 @@
 const express = require("express")
+const cookieParser = require("cookie-parser")
 const userRouter = require("./routes/user")
+const orderRouter = require("./routes/order.js")
 const path = require("path") ;
 const loginRouter = require("./routes/login.js")
-const {requireAuth} = require("./middleware/authMiddleware") 
+const {requireAuth,getCurrentUser} = require("./middleware/authMiddleware") 
 const bodyParser = require("body-parser") ;
 const app = express()
 const port = 5000
 app.use(express.json())
 app.use(bodyParser.json());
+app.use(cookieParser())
 app.set('views', path.join(__dirname, 'views'));
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -20,6 +23,9 @@ app.use("/fonts", express.static(__dirname + "/public/fonts"));
 app.use("/img", express.static(__dirname + "/public/img"));
 app.use("/partials", express.static(__dirname + "/public/partials"));
 app.use("/login",loginRouter);
+app.use("/user",userRouter);
+app.use("/order",orderRouter);
+app.get("*",getCurrentUser)
 
 app.get("/", (req, res) => {
     res.render("index");
@@ -33,7 +39,7 @@ app.get("/", (req, res) => {
   app.get("/register", (req, res) => {
     res.render("register");
   })
-  app.get("/dashboard", (req, res) => {
+  app.get("/dashboard", requireAuth, (req, res) => {
     res.render("dashboard",{currentPage: "dashboard"});
   })
   app.get("/orders", (req, res) => {
@@ -46,7 +52,7 @@ app.get("/", (req, res) => {
     res.render("writers",{currentPage: "writers"});
   })
 
-  app.get("/profile", (req, res) => {
+  app.get("/profile",requireAuth, (req, res) => {
     res.render("profile",{currentPage: "profile"});
   })
   app.get("/team", (req, res) => {

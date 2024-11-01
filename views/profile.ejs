@@ -176,45 +176,21 @@
                 <div class="profile-header">
                     <img src="img/client-profile.jpg" alt="Client Profile">
                     <div>
-                        <h1>John Doe</h1>
-                        <p class="text-muted">Client ID: #5678</p>
+                        <h1><%= user.fullnames %></h1>
                     </div>
                 </div>
 
                 <div class="profile-details">
                     <h2>Contact Information</h2>
-                    <p><strong>Email:</strong> johndoe@example.com</p>
-                    <p><strong>Phone:</strong> +123 456 7890</p>
-                    <p><strong>Address:</strong> 123 Main St, City, Country</p>
+                    <p><strong>Email:</strong> <%= user.email %></p>
+                    <p><strong>Phone:</strong> <%= user.phone_number %></p>
                 </div>
 
                 <div class="profile-details">
-                    <h2>Order History</h2>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Title</th>
-                                <th>Price</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#1234</td>
-                                <td>Research Paper on AI</td>
-                                <td>$150.00</td>
-                                <td><span class="badge bg-success">Completed</span></td>
-                            </tr>
-                            <tr>
-                                <td>#1235</td>
-                                <td>Thesis on Cybersecurity</td>
-                                <td>$200.00</td>
-                                <td><span class="badge bg-info">In Progress</span></td>
-                            </tr>
-                            <!-- Add more rows dynamically with a loop -->
-                        </tbody>
-                    </table>
+                    <h2>My Orders</h2>
+
+                    <%- include('component/orders'); -%>
+
                 </div>
             </div>
 
@@ -228,7 +204,7 @@
 
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-
+<script src="js/orders.js"></script>
     <!-- Custom JavaScript -->
     <script>
         document.querySelector('.btn-toggle-sidebar').addEventListener('click', function () {
