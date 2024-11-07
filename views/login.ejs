@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Plumberz - Free Plumbing Website Template</title>
+    <title>Eduaidx - Free Plumbing Website Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -121,7 +121,10 @@
             <div class="row g-4">
                
                 <div class="col-md-6 mx-auto wow fadeInUp" data-wow-delay="0.1s">
+                    <div id="error_alert"></div>
+
                     <div class="bg-light p-5 h-100 d-flex align-items-center">
+
                         <form>
                             <div class="d-flex justify-content-center align-items-center flex-column text-center gap-3">
                                 <img src="img/1.png" alt="Eduaidx Logo" class=" mb-2" style="width: 150px; height: 110px;" />
@@ -142,13 +145,15 @@
                                         <label for="email">Enter Your Password</label>
                                     </div>
                                 </div>
-                               
+                                <div id="form-spinner" class="position-absolute" style="top: 50%; right: 50%; z-index: 30;"></div>
+
                                 <div class="col-12">
                                     <button class="btn btn-primary w-100 py-3" type="submit">Login</button>
                                 </div>
                             </div>
                         </form>
                     </div>
+                    <p class="text-center mt-3">Don't have an account? <a href="/register" class="text-custom">Register</a></p>
                 </div>
             </div>
         </div>
@@ -232,6 +237,9 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js">
+        
+    </script>
+    <script src="js/login.js">
         
     </script>
 </body>

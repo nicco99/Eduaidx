@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="new order, EduAidx, dashboard">
+    <meta name="description" content="Create new orders in EduAidx">
+    <title>EduAidx - New Order</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="img/eduaidx-logo.jpg">
+
+    <!-- Bootstrap Stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f6fa;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background-color: #4e4c6d;
+            padding: 20px;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 10px 0;
+            display: block;
+            padding: 12px;
+            border-radius: 5px;
+        }
+
+        .sidebar a.active {
+            background-color: #4e4c6d;
+        }
+
+        .sidebar a:hover {
+            background-color: #4e4c6d;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        @media (max-width: 991px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .btn-toggle {
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                background-color: #4e4c6d;
+                color: white;
+                border: none;
+                padding: 10px;
+                border-radius: 50%;
+                z-index: 1000;
+            }
+        }
+
+        .btn-custom {
+            background-color: #4e4c6d;
+            color: white;
+            border-radius: 30px;
+            padding: 10px 25px;
+        }
+
+        .btn-custom:hover {
+            background-color: #565379;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .form-section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar Toggle Button for Small Screens -->
+    <button class="btn-toggle d-lg-none"><i class="fas fa-bars"></i></button>
+
+    <!-- Sidebar -->
+    <div class="col-lg-2 sidebar">
+        <div class="container-fluid text-center mb-4">
+            <img class="rounded shadow img-fluid" src="img/eduaidx-logo.jpg" alt="EduAidx Logo" style="width: 120px;">
+        </div>
+
+        <a href="/dashboard" class="<%= currentPage === 'dashboard' ? 'active' : '' %>"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="/orders" class="<%= currentPage === 'orders' ? 'active' : '' %>"><i class="fas fa-file-alt"></i> Orders</a>
+        <a href="/writers" class="<%= currentPage === 'writers' ? 'active' : '' %>"><i class="fas fa-users"></i> Writers</a>
+        <a href="/payments" class="<%= currentPage === 'payments' ? 'active' : '' %>"><i class="fas fa-money-bill-wave"></i> Payments</a>
+        <a href="/profile" class="<%= currentPage === 'profile' ? 'active' : '' %>"><i class="fas fa-money-bill-wave"></i> Profile</a>
+
+    </div>
+    <span id="user_id" style="visibility: hidden;"><%= user.id %></span>
+    <!-- Content -->
+    <div class="col-lg-10 content">
+        <div class="container-fluid">
+            <h1 class="h3">Create New Order</h1>
+            <p class="text-muted">Fill in the details below to create a new order.</p>
+
+            <!-- New Order Form -->
+            <form id="newOrderForm">
+                <div class="row form-section">
+                  <div class="col-md-6">
+                    <label for="orderTitle" class="form-label">Order Title:</label>
+                    <input type="text" id="orderTitle" class="form-control" placeholder="Enter order title" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="orderPrice" class="form-label">Price ($):</label>
+                    <input type="number" id="orderPrice" class="form-control" placeholder="Enter price" required step="0.01">
+                  </div>
+                </div>
+              
+                <div class="row form-section">
+                  <div class="col-md-12">
+                    <label for="orderDescription" class="form-label">Order Description:</label>
+                    <textarea id="orderDescription" class="form-control" rows="5" placeholder="Enter detailed description" required></textarea>
+                  </div>
+                </div>
+              
+                <div class="row form-section">
+                  <div class="col-md-6">
+                    <label for="deadlineDate" class="form-label">Deadline:</label>
+                    <input type="date" id="deadlineDate" class="form-control" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="documentUpload" class="form-label">Document Upload:</label>
+                    <input type="file" id="documentUpload" class="form-control" accept=".pdf, .doc, .docx, .txt, .jpg, .png">
+                  </div>
+                </div>
+              
+              
+                <button type="submit" class="btn btn-custom">Create Order</button>
+              </form>
+              
+        </div>
+    </div>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+       
+       document.getElementById("newOrderForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  // Collect form data
+  const orderTitle = document.getElementById("orderTitle").value;
+  const orderPrice = document.getElementById("orderPrice").value;
+  const orderDescription = document.getElementById("orderDescription").value;
+  const deadlineDate = document.getElementById("deadlineDate").value;
+  const documentUpload = document.getElementById("documentUpload").files[0];
+  const user_id = document.getElementById("user_id").innerHTML
+  // Prepare data for submission
+  const formData = new FormData();
+  formData.append("orderTitle", orderTitle);
+  formData.append("orderPrice", orderPrice);
+  formData.append("orderDescription", orderDescription);
+  formData.append("deadlineDate", deadlineDate);
+  formData.append("userId",user_id)
+  if (documentUpload) {
+    formData.append("documentUpload", documentUpload);
+  }
+
+  try {
+    // Send POST request to /order endpoint
+    const response = await fetch("/order", {
+      method: "POST",
+      body: formData
+    });
+
+    // Handle response
+    if (response.ok) {
+      const result = await response.json();
+      alert("Order created successfully!");
+      console.log("Response data:", result);
+      // Optionally reset the form after successful submission
+      document.getElementById("newOrderForm").reset();
+    } else {
+      const error = await response.json();
+      console.error("Error creating order:", error);
+      alert("Failed to create order. Please try again.");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("An error occurred while creating the order.");
+  }
+});
+
+        // Sidebar toggle script for small screens
+        document.querySelector('.btn-toggle').addEventListener('click', function () {
+            document.querySelector('.sidebar').classList.toggle('show');
+        });
+    </script>
+
+</body>
+
+</html>
