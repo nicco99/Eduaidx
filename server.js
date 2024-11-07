@@ -55,6 +55,12 @@ app.get("/", (req, res) => {
   app.get("/personal-statement", (req, res) => {
     res.render("personalstatement",{currentPage: "personalstatement"});
   })
+  app.get("/dissertation", (req, res) => {
+    res.render("dissertation&thesis",{currentPage: "dissertation"});
+  })
+  app.get("/coding-homework", (req, res) => {
+    res.render("codinghomework",{currentPage: "codinghomework"});
+  })
   app.get("/new-order", (req, res) => {
     res.render("new-order",{currentPage: "new-order"});
   })
