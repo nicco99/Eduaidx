@@ -59,4 +59,19 @@ async function getMyOrders(req,res) {
   }
 }
 
-module.exports = { createOrder, getOrder ,getMyOrders};
+async function getOrders() {
+  try {
+    const orderResult = await pool.query('SELECT * FROM orders');
+    if (orderResult.rows.length === 0) {
+      return []
+    }
+
+    const orders = orderResult.rows;
+    return [...orders]
+  } catch (err) {
+return []    
+  }
+ return [] 
+}
+
+module.exports = { createOrder, getOrder ,getMyOrders,getOrders};

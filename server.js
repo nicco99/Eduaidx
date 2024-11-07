@@ -5,6 +5,7 @@ const orderRouter = require("./routes/order.js")
 const levelRouter = require("./routes/level")
 const typeRouter = require("./routes/type.js")
 const path = require("path") ;
+const {getOrders}  = require("./controllers/order.js") 
 const loginRouter = require("./routes/login.js")
 const {requireAuth,getCurrentUser} = require("./middleware/authMiddleware") 
 const bodyParser = require("body-parser") ;
@@ -43,11 +44,14 @@ app.get("/", (req, res) => {
   app.get("/register", (req, res) => {
     res.render("register");
   })
-  app.get("/dashboard", requireAuth, (req, res) => {
-    res.render("dashboard",{currentPage: "dashboard"});
+  app.get("/dashboard", requireAuth, async(req, res) => {
+    const order = await getOrders()
+    res.render("dashboard",{currentPage: "dashboard",totalOrders: order.length });
   })
-  app.get("/orders", (req, res) => {
-    res.render("orders",{currentPage: "orders"});
+  app.get("/orders", async(req, res) => {
+    const order = await getOrders()
+
+    res.render("orders",{currentPage: "orders",orders: order});
   })
   app.get("/assignment-help", (req, res) => {
     res.render("assignmenthelp",{currentPage: "assignmenthelp"});
