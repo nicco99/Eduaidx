@@ -29,6 +29,17 @@ const initializeDatabase = async () => {
         status TEXT NOT NULL,
         price DECIMAL(10, 2) NOT NULL
       );
+
+      
+      CREATE TABLE IF NOT EXISTS levels (
+        id SERIAL PRIMARY KEY,
+       name TEXT NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS assignmenttypes (
+        id SERIAL PRIMARY KEY,
+       name TEXT NOT NULL
+      );
     `);
     console.log('Clients and Orders tables created or already exist.');
   } catch (error) {

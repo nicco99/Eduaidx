@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
 
-const {db} = require('../db/dbConnection.js');
+const { pool } = require('../db/dbConnection.js'); // Import pool instead of db
 
 const generateJwtToken = (userId) => {
   try {
@@ -18,22 +18,19 @@ const generateJwtToken = (userId) => {
 async function login(req, res) {
   const { username, password } = req.body;
 
-  // Retrieve user record from the SQLite3 database based on the provided email
-  const query = 'SELECT * FROM clients WHERE email = ?';
-  db.get(query, [username], async (err, user) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
+  try {
+    // Retrieve user record from the PostgreSQL database based on the provided email
+    const query = 'SELECT * FROM clients WHERE username = $1';
+    const result = await pool.query(query, [username]);
 
     // Check if user with provided email exists
+    const user = result.rows[0];
     if (!user) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
     // Compare hashed password from the database with the provided password
     const passwordMatch = await bcrypt.compare(password, user.password);
-
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
@@ -46,7 +43,10 @@ async function login(req, res) {
 
     // Send user details in the response
     res.status(200).json({ user });
-  });
+  } catch (err) {
+    console.error('Database error:', err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 }
 
 module.exports = { login };

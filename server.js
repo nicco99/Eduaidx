@@ -2,6 +2,8 @@ const express = require("express")
 const cookieParser = require("cookie-parser")
 const userRouter = require("./routes/user")
 const orderRouter = require("./routes/order.js")
+const levelRouter = require("./routes/level")
+const typeRouter = require("./routes/type.js")
 const path = require("path") ;
 const loginRouter = require("./routes/login.js")
 const {requireAuth,getCurrentUser} = require("./middleware/authMiddleware") 
@@ -25,6 +27,8 @@ app.use("/partials", express.static(__dirname + "/public/partials"));
 app.use("/login",loginRouter);
 app.use("/user",userRouter);
 app.use("/order",orderRouter);
+app.use("/levels",levelRouter);
+app.use("/assignment-types",typeRouter)
 app.get("*",getCurrentUser)
 
 app.get("/", (req, res) => {
@@ -44,6 +48,12 @@ app.get("/", (req, res) => {
   })
   app.get("/orders", (req, res) => {
     res.render("orders",{currentPage: "orders"});
+  })
+  app.get("/assignment-help", (req, res) => {
+    res.render("assignmenthelp",{currentPage: "assignmenthelp"});
+  })
+  app.get("/personal-statement", (req, res) => {
+    res.render("personalstatement",{currentPage: "personalstatement"});
   })
   app.get("/new-order", (req, res) => {
     res.render("new-order",{currentPage: "new-order"});

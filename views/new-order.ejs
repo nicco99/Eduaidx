@@ -140,9 +140,13 @@
                     <label for="orderTitle" class="form-label">Order Title:</label>
                     <input type="text" id="orderTitle" class="form-control" placeholder="Enter order title" required>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-3">
                     <label for="orderPrice" class="form-label">Price ($):</label>
                     <input type="number" id="orderPrice" class="form-control" placeholder="Enter price" required step="0.01">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="pages" class="form-label">Number of Pages:</label>
+                    <input type="number" id="pages" class="form-control" placeholder="Enter Number of Pages" required >
                   </div>
                 </div>
               
@@ -152,12 +156,35 @@
                     <textarea id="orderDescription" class="form-control" rows="5" placeholder="Enter detailed description" required></textarea>
                   </div>
                 </div>
-              
+              <div class="row form-section">
+                <div class="col-md-6">
+                  <label for="level" class="form-label">Level:</label>
+                  <select id="level" class="form-control" required>
+                    <option value="" >Select Education level</option>
+                   
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="assignment_type" class="form-label">Assignment Type:</label>
+                  <select id="type" class="form-control" required>
+                    <option value="" >Select Assignment type</option>
+                  </select>
+                </div>
+              </div>
                 <div class="row form-section">
                   <div class="col-md-6">
                     <label for="deadlineDate" class="form-label">Deadline:</label>
-                    <input type="date" id="deadlineDate" class="form-control" required>
+                    <select id="deadlineDate" class="form-control" required>
+                      <option value="" >Deadline</option>
+                      <option>12 Hours</option>
+                      <option>1 Day</option>
+                      <option>2 to 7 Days</option>
+                      <option>8 to 30 Days</option>
+                      <option>30 Days plus</option>
+                    </select>
                   </div>
+                 
+                  
                   <div class="col-md-6">
                     <label for="documentUpload" class="form-label">Document Upload:</label>
                     <input type="file" id="documentUpload" class="form-control" accept=".pdf, .doc, .docx, .txt, .jpg, .png">
@@ -227,6 +254,45 @@
         document.querySelector('.btn-toggle').addEventListener('click', function () {
             document.querySelector('.sidebar').classList.toggle('show');
         });
+
+        async function populateLevels() {
+    try {
+      const response = await fetch('/levels');
+      const data = await response.json();
+
+      const levelSelect = document.getElementById('level');
+      data.levels.forEach(level => {
+        const option = document.createElement('option');
+        option.value = level.id;
+        option.textContent = level.name;
+        levelSelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error('Error fetching levels:', error);
+    }
+  }
+
+  async function populateAssignmentTypes() {
+    try {
+      const response = await fetch('/assignment-types');
+      const data = await response.json();
+
+      const assignmentTypeSelect = document.getElementById('type');
+      data?.types.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type.id;
+        option.textContent = type.name;
+        assignmentTypeSelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error('Error fetching assignment types:', error);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    populateLevels();
+    populateAssignmentTypes();
+  });
     </script>
 
 </body>
